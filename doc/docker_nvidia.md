@@ -12,13 +12,14 @@
 ## 创建基础镜像
 ```shell
 cd code/docker_nvidia
-docker build -t mineru:v0 .
+docker build -t nvidia_doc_flow_ai:v0 .
 ```
 
 ## 创建容器
+若项目路径为 `/home/metax/DocFlowAI` ，则容器启动命令为
 ```shell
-docker run -itd --name mineru_test --gpus=all -v /home/hengtao/mineru/model:/model -v /home/gyyan/code/agent/agent_docai_multimodel_parse:/code  mineru:v0 /bin/bash
-docker exec -it mineru_test /bin/bash
+docker run -itd --name nvidia_doc_flow_ai_test --gpus=all -v /home/metax/DocFlowAI/model:/model -v /home/metax/DocFlowAI:/code  nvidia_doc_flow_ai:v0 /bin/bash
+docker exec -it nvidia_doc_flow_ai /bin/bash
 ```
 
 ## 设置conda源
@@ -57,11 +58,11 @@ git clone -b release-1.3.12  https://github.com/opendatalab/MinerU.git
 python replace_files.py ./code ./MinerU
 
 # 复制文件
-cp ./MinerU/magic_pdf/model/__init__.py /code/MinerU/dolphin/model/
+cp ./MinerU/magic_pdf/model/__init__.py ./MinerU/dolphin/model/
 
 # 复制文件
-mkdir -p /code/MinerU/dolphin/resources/model_config
-cp ./MinerU/magic_pdf/resources/model_config/model_configs.yaml /code/MinerU/dolphin/resources/model_config/
+mkdir -p ./MinerU/dolphin/resources/model_config
+cp ./MinerU/magic_pdf/resources/model_config/model_configs.yaml ./MinerU/dolphin/resources/model_config/
 ```
 
 ## 模型权重下载
@@ -124,5 +125,5 @@ Options:
 
 ## 保存容器为新镜像
 ```shell
-docker commit mineru_test mineru_dolphin_nvidia:v0
+docker commit nvidia_doc_flow_ai_test nvidia_doc_flow_ai:v1
 ```
