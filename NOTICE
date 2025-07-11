@@ -1,0 +1,49 @@
+The MetaX Document Flow AI project is modified from MinerU (https://github.com/opendatalab/MinerU). 
+Please see the LICENSE for the license for this project.
+
+This project contains third-party components with separate copyright notices and license terms. 
+Your use of the source code for the these third-party components are subject to the terms and conditions of their licenses. 
+
+The following files may have been modified by MetaX Integrated Circuits (Shanghai) Co., Ltd. in 2025.  
+Modification copyright 2025 MetaX Integrated Circuits (Shanghai) Co.,Ltd. 
+                                                
+code/dolphin/libs/config_reader.py
+code/dolphin/model/batch_analyze.py
+code/dolphin/model/doc_analyze_by_custom_model.py
+code/dolphin/model/dolphin/demo_element_hf.py
+code/dolphin/model/dolphin/demo_page_hf.py
+code/dolphin/model/dolphin/utils/markdown_utils.py
+code/dolphin/model/dolphin/utils/model.py
+code/dolphin/model/dolphin/utils/processor.py
+code/dolphin/model/dolphin/utils/utils.py
+code/dolphin/model/magic_model.py
+code/dolphin/model/pdf_extract_kit.py
+code/dolphin/model/sub_modules/model_utils.py
+code/dolphin/pdf_parse_union_core_v2.py
+code/dolphin/pre_proc/ocr_detect_all_bboxes.py
+code/dolphin/pre_proc/ocr_dict_merge.py
+code/dolphin/tools/cli.py
+code/dolphin/tools/common.py
+code/magic-pdf.template.json
+code/magic_pdf/dict2md/ocr_mkcontent.py
+code/magic_pdf/libs/config_reader.py
+code/magic_pdf/model/batch_analyze.py
+code/magic_pdf/model/doc_analyze_by_custom_model.py
+code/magic_pdf/model/magic_model.py
+code/magic_pdf/model/pdf_extract_kit.py
+code/magic_pdf/model/sub_modules/ocr/paddleocr2pytorch/ocr_utils.py
+code/magic_pdf/pdf_parse_union_core_v2.py
+code/magic_pdf/pre_proc/ocr_detect_all_bboxes.py
+code/magic_pdf/pre_proc/ocr_dict_merge.py
+code/magic_pdf/tools/cli.py
+code/projects/web_api/app.py
+code/requirements.txt
+code/scripts/download_models_hf_dolphin.py
+code/setup.py
+
+
+The following files are newly added by MetaX Integrated Circuits (Shanghai) Co., Ltd. in 2025.   All rights reserved.
+
+doc/文档知识问答Agent.yml
+diff.txt
+replace_files.py
