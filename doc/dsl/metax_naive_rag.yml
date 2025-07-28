@@ -1,0 +1,293 @@
+app:
+  description: ''
+  icon: 📑
+  icon_background: '#E0F2FE'
+  mode: advanced-chat
+  name: naive_rag
+  use_icon_as_answer_icon: false
+dependencies:
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/openai_api_compatible:0.0.16@d41b09aca46cdd3876f70b4c91d464c4588fc0bdc844ced6ee426283ead6ce8e
+kind: app
+version: 0.3.0
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - image
+      allowed_file_upload_methods:
+      - local_file
+      - remote_url
+      enabled: false
+      fileUploadConfig:
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 30
+        image_file_size_limit: 10
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 10
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 3
+    opening_statement: ''
+    retriever_resource:
+      enabled: false
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        sourceType: llm
+        targetType: parameter-extractor
+      id: 1711528917469-source-1719060889083-target
+      source: '1711528917469'
+      sourceHandle: source
+      target: '1719060889083'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: parameter-extractor
+        targetType: answer
+      id: 1719060889083-source-1711528919501-target
+      source: '1719060889083'
+      sourceHandle: source
+      target: '1711528919501'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: start
+        targetType: knowledge-retrieval
+      id: 1711528914102-source-1753166961934-target
+      source: '1711528914102'
+      sourceHandle: source
+      target: '1753166961934'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: knowledge-retrieval
+        targetType: llm
+      id: 1753166961934-source-1711528917469-target
+      source: '1753166961934'
+      sourceHandle: source
+      target: '1711528917469'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        desc: ''
+        selected: false
+        title: 开始
+        type: start
+        variables: []
+      height: 53
+      id: '1711528914102'
+      position:
+        x: 80
+        y: 282
+      positionAbsolute:
+        x: 80
+        y: 282
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: true
+          variable_selector:
+          - '1753166961934'
+          - result
+        desc: ''
+        memory:
+          role_prefix:
+            assistant: ''
+            user: ''
+          window:
+            enabled: false
+            size: 50
+        model:
+          completion_params:
+            frequency_penalty: 0
+            max_tokens: 512
+            presence_penalty: 0
+            temperature: 0.7
+            top_p: 1
+          mode: chat
+          name: DeepSeek-R1
+          provider: langgenius/openai_api_compatible/openai_api_compatible
+        prompt_template:
+        - id: fa05a839-bd10-4cc1-8e88-bbe3a4a5b11e
+          role: system
+          text: '你是一个乐于助人的助手。
+
+            使用以下内容作为你所学习的知识，放在<context></context> XML标签内。
+
+            <context>
+
+            {{#context#}}
+
+            </context>
+
+            回答用户时：
+
+            如果你不知道，就直说你不知道。如果你在不确定的时候不知道，就寻求澄清。
+
+            避免提及你是从上下文中获取的信息。
+
+            并根据用户问题的语言来回答。'
+        selected: false
+        title: LLM
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 89
+      id: '1711528917469'
+      position:
+        x: 648
+        y: 282
+      positionAbsolute:
+        x: 648
+        y: 282
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        answer: '{{#1719060889083.answer#}}'
+        desc: ''
+        selected: false
+        title: 直接回复
+        type: answer
+        variables: []
+      height: 104
+      id: '1711528919501'
+      position:
+        x: 1230.9747327621114
+        y: 282
+      positionAbsolute:
+        x: 1230.9747327621114
+        y: 282
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        instruction: ''
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: DeepSeek-R1
+          provider: langgenius/openai_api_compatible/openai_api_compatible
+        parameters:
+        - description: Dify的安装
+          name: answer
+          required: true
+          type: string
+        query:
+        - '1711528917469'
+        - text
+        reasoning_mode: prompt
+        selected: false
+        title: 参数提取器
+        type: parameter-extractor
+        variables: []
+        vision:
+          enabled: false
+      height: 89
+      id: '1719060889083'
+      position:
+        x: 952
+        y: 282
+      positionAbsolute:
+        x: 952
+        y: 282
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        dataset_ids:
+        - yA4xrJLB3KGStP+2wdMkJC6vFCYhFTfTXd5RUZZNrOpUWeOg34EolkDCpm/HNyxH
+        - rwYiI5sFenFY3acZoHcz2o351R4H3UqejL9D5+pkw/SiA4BB4H3xOU2G0qOWopzY
+        - odY58VgYB5NBv/x5Tcmd5haOBJGjbusZpX1OM1CpSqyDPV47kucEUBtVaqzZfOu2
+        - QSAbnmTUKgLZTk14nBW7nRTVMdmRY58cwNqgcm5ZDkiNV50O4jDWiZJ9VxfpcWYu
+        - L0t5KwF0YULmnPzOxXGYlWBP9Bp7COH2q8xcFQaX21aEl9myJ0XPOXcs4Vq6r/a0
+        - R6S8C2vtGd8szU6PAYys+lCVQ7xkgyRsegRzExMsRYakNwP7fbm9IX6wW+Ee6smi
+        - PjgqqE3c+ICSO5Cb2oXO5H9RsIIzss1TAo3lo6dkyoATXjhhbL+jz06e3jNl99qa
+        - NI1MZNT73+nCfZLg599WjAgCtIVhWe22Zul5Kix9mNskTKUUcA8Hgl7/CbQGJd3N
+        - ufiKVPWZSDJPi8BqhAXwwwKJKVZncYXkXLSH5bzOcfk2ZsAXzMxap8vV/LeFYmrl
+        - Az2tPRwOSPOw1EA1r3VZ/0JU0Pgn5/C1K8GV4efEdV7OhpC4zNcGcPThn9jRZyj/
+        - 5FQZa2TgHTHBEKW6hrxIhWo+ZvJoyg3Wyz83ckeBL+VclVh9EW8lZ/D00n37XHAY
+        - HQH9xG1bESqLoXOmXU3Iy1MpDiuKaEjxTRMKt4bjN9YAec96rocKwSfpUZLGX4ja
+        desc: ''
+        multiple_retrieval_config:
+          reranking_enable: false
+          reranking_mode: reranking_model
+          reranking_model:
+            model: Qwen3-Reranker-8B
+            provider: langgenius/openai_api_compatible/openai_api_compatible
+          top_k: 4
+        query_variable_selector:
+        - '1711528914102'
+        - sys.query
+        retrieval_mode: multiple
+        selected: false
+        title: 知识检索
+        type: knowledge-retrieval
+      height: 399
+      id: '1753166961934'
+      position:
+        x: 385.02526723788856
+        y: 282
+      positionAbsolute:
+        x: 385.02526723788856
+        y: 282
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    viewport:
+      x: 93.62032451758932
+      y: 331.71626498668206
+      zoom: 0.9753554615276419

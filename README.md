@@ -105,7 +105,19 @@
 详细使用方法请参考 [usage.md](doc/usage.md)
 
 ## 文档知识问答Agent
-搭建与使用流程请参考：[dify_build.md](doc/dify_build.md)
+本方案提供4种具备不同功能[RAG方案](doc/rag.md)，可适用于多种应用场景。在Dify平台上通过DSL文件一键导入，即插即用。
+- **Naive RAG**：基础检索增强生成，直接检索文档片段后输入生成模型（LLM）进行回答；
+- **Advanced RAG**：整合业界RAG优化策略（如query Expansion、重排序、查询扩展、动态上下文压缩等），提升检索和生成效果；
+- **Simple Multimodal RAG**：支持多模态输入（如图片、文本），结合视觉语言模型（VLM）进行跨模态推理生成；
+- **Deep Research**：通过论点规划构建“金字塔逻辑”，分阶段检索证据并生成结构化研究报告。
+
+DIFY搭建与使用流程请参考：[dify_build.md](doc/dify_build.md)
+
+四种RAG方案的DSL文件见：
+- [Naive RAG](doc/dsl/metax_naive_rag.yml)
+- [Advanced RAG](doc/dsl/metax_advanced_rag.yml)
+- [Simple Multimodal RAG](doc/dsl/metax_multimodel_rag_simple.yml)
+- [DeepResearch](doc/dsl/metax_Deep_Researcher.yml)
 
 ## 致谢
 本项目基于以下优秀开源方案开发而来：

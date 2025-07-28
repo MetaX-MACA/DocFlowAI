@@ -1,0 +1,790 @@
+app:
+  description: ''
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  mode: advanced-chat
+  name: multimodel_rag_simple
+  use_icon_as_answer_icon: false
+dependencies:
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/gitee_ai:0.1.3@e0cdb0dcc9c1f5fb657f9aebc3335a9dd08616922a52f0d181613e3f868186f5
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/openai_api_compatible:0.0.16@d41b09aca46cdd3876f70b4c91d464c4588fc0bdc844ced6ee426283ead6ce8e
+- current_identifier: null
+  type: package
+  value:
+    plugin_unique_identifier: franztao/mineru_dolphin:0.2.2@770f23b6b402f7f68b93e169dd237987d3e1ee9624ae10ba624b5331a6ea8093
+kind: app
+version: 0.3.0
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - image
+      allowed_file_upload_methods:
+      - remote_url
+      - local_file
+      enabled: false
+      fileUploadConfig:
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 30
+        image_file_size_limit: 10
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 10
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 3
+    opening_statement: ''
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        sourceType: llm
+        targetType: answer
+      id: llm-answer
+      source: llm
+      sourceHandle: source
+      target: answer
+      targetHandle: target
+      type: custom
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: start
+        targetType: knowledge-retrieval
+      id: 1753152872645-source-1753153160531-target
+      source: '1753152872645'
+      sourceHandle: source
+      target: '1753153160531'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: knowledge-retrieval
+        targetType: variable-aggregator
+      id: 1753153160531-source-1753153179046-target
+      source: '1753153160531'
+      sourceHandle: source
+      target: '1753153179046'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: knowledge-retrieval
+        targetType: variable-aggregator
+      id: 1753153097321-source-1753153179046-target
+      source: '1753153097321'
+      sourceHandle: source
+      target: '1753153179046'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: start
+        targetType: tool
+      id: 1753152872645-source-1753173098055-target
+      source: '1753152872645'
+      sourceHandle: source
+      target: '1753173098055'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: tool
+        targetType: knowledge-retrieval
+      id: 1753173098055-source-1753153097321-target
+      source: '1753173098055'
+      sourceHandle: source
+      target: '1753153097321'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: variable-aggregator
+        targetType: llm
+      id: 1753153179046-source-1753174352720-target
+      source: '1753153179046'
+      sourceHandle: source
+      target: '1753174352720'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: llm
+        targetType: llm
+      id: 1753174352720-source-llm-target
+      source: '1753174352720'
+      sourceHandle: source
+      target: llm
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        desc: ''
+        selected: false
+        title: 开始
+        type: start
+        variables:
+        - allowed_file_extensions: []
+          allowed_file_types:
+          - image
+          allowed_file_upload_methods:
+          - local_file
+          label: 输入的图片
+          max_length: 48
+          options: []
+          required: true
+          type: file
+          variable: file_pic
+      height: 89
+      id: '1753152872645'
+      position:
+        x: 30
+        y: 265
+      positionAbsolute:
+        x: 30
+        y: 265
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        memory:
+          query_prompt_template: '{{#sys.query#}}
+
+            '
+          role_prefix:
+            assistant: ''
+            user: ''
+          window:
+            enabled: false
+            size: 10
+        model:
+          completion_params:
+            max_tokens: 32000
+            temperature: 0.7
+          mode: chat
+          name: InternVL2.5-78B
+          provider: langgenius/gitee_ai/gitee_ai
+        prompt_template:
+        - id: 793a7d2a-5353-40ff-a15b-b8f87c2fc724
+          role: system
+          text: "<指令>根据已知信息，简洁和专业的来回答问题，答案请使用中文。 \n</指令>\r\n<已知信息>{{#1753174352720.text#}}</已知信息>"
+        selected: false
+        structured_output_enabled: false
+        title: LLM
+        type: llm
+        variables: []
+        vision:
+          configs:
+            detail: high
+            variable_selector:
+            - '1753152872645'
+            - file_pic
+          enabled: true
+      height: 89
+      id: llm
+      position:
+        x: 1550
+        y: 265
+      positionAbsolute:
+        x: 1550
+        y: 265
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        answer: '{{#llm.text#}}'
+        desc: ''
+        selected: false
+        title: 直接回复
+        type: answer
+        variables: []
+      height: 104
+      id: answer
+      position:
+        x: 1854
+        y: 265
+      positionAbsolute:
+        x: 1854
+        y: 265
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        dataset_ids:
+        - L0t5KwF0YULmnPzOxXGYlWBP9Bp7COH2q8xcFQaX21aEl9myJ0XPOXcs4Vq6r/a0
+        desc: ''
+        multiple_retrieval_config:
+          reranking_enable: false
+          reranking_mode: reranking_model
+          reranking_model:
+            model: Qwen3-Reranker-8B
+            provider: langgenius/openai_api_compatible/openai_api_compatible
+          top_k: 4
+        query_variable_selector:
+        - '1753173098055'
+        - text
+        retrieval_mode: multiple
+        selected: false
+        title: imagedesc_retrieve
+        type: knowledge-retrieval
+      height: 91
+      id: '1753153097321'
+      position:
+        x: 638
+        y: 459.5
+      positionAbsolute:
+        x: 638
+        y: 459.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        dataset_ids:
+        - L0t5KwF0YULmnPzOxXGYlWBP9Bp7COH2q8xcFQaX21aEl9myJ0XPOXcs4Vq6r/a0
+        desc: ''
+        multiple_retrieval_config:
+          reranking_enable: false
+          reranking_mode: reranking_model
+          reranking_model:
+            model: Qwen3-Reranker-8B
+            provider: langgenius/openai_api_compatible/openai_api_compatible
+          top_k: 4
+        query_variable_selector:
+        - '1753152872645'
+        - sys.query
+        retrieval_mode: multiple
+        selected: false
+        title: question_retrieve
+        type: knowledge-retrieval
+      height: 91
+      id: '1753153160531'
+      position:
+        x: 638
+        y: 265
+      positionAbsolute:
+        x: 638
+        y: 265
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        output_type: array[object]
+        selected: false
+        title: fusion
+        type: variable-aggregator
+        variables:
+        - - '1753153160531'
+          - result
+        - - '1753153097321'
+          - result
+      height: 130
+      id: '1753153179046'
+      position:
+        x: 942
+        y: 265
+      positionAbsolute:
+        x: 942
+        y: 265
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        is_team_authorization: true
+        output_schema:
+          properties:
+            full_zip_url:
+              description: The zip URL of the complete parsed result
+              type: string
+            images:
+              description: The images extracted from the file
+              items:
+                type: object
+              type: array
+          type: object
+        paramSchemas:
+        - auto_generate: null
+          default: null
+          form: llm
+          human_description:
+            en_US: the file to be parsed(support pdf, ppt, pptx, doc, docx, png, jpg,
+              jpeg)
+            ja_JP: 解析するファイル(pdf、ppt、pptx、doc、docx、png、jpg、jpegをサポート)
+            pt_BR: the file to be parsed(support pdf, ppt, pptx, doc, docx, png, jpg,
+              jpeg)
+            zh_Hans: 用于解析的文件(支持 pdf, ppt, pptx, doc, docx, png, jpg, jpeg)
+          label:
+            en_US: file
+            ja_JP: file
+            pt_BR: file
+            zh_Hans: file
+          llm_description: the file to be parsed (support pdf, ppt, pptx, doc, docx,
+            png, jpg, jpeg)
+          max: null
+          min: null
+          name: file
+          options: []
+          placeholder: null
+          precision: null
+          required: true
+          scope: null
+          template: null
+          type: file
+        - auto_generate: null
+          default: mineru
+          form: form
+          human_description:
+            en_US: 文档智能AI算法类型
+            ja_JP: 文档智能AI算法类型
+            pt_BR: 文档智能AI算法类型
+            zh_Hans: 文档智能AI算法类型
+          label:
+            en_US: method type
+            ja_JP: 文档智能AI算法类型
+            pt_BR: method type
+            zh_Hans: 文档智能AI算法类型
+          llm_description: 文档智能AI算法类型
+          max: null
+          min: null
+          name: method_type
+          options:
+          - icon: ''
+            label:
+              en_US: mineru
+              ja_JP: mineru
+              pt_BR: mineru
+              zh_Hans: mineru
+            value: mineru
+          - icon: ''
+            label:
+              en_US: dolphin
+              ja_JP: dolphin
+              pt_BR: dolphin
+              zh_Hans: dolphin
+            value: dolphin
+          placeholder: null
+          precision: null
+          required: false
+          scope: null
+          template: null
+          type: select
+        - auto_generate: null
+          default: 1
+          form: form
+          human_description:
+            en_US: （用于官方API）是否开启插图VLM生成描述
+            ja_JP: （用于官方API）是否开启插图VLM生成描述
+            pt_BR: （用于官方API）是否开启插图VLM生成描述
+            zh_Hans: （用于官方API）是否开启插图VLM生成描述
+          label:
+            en_US: 开启插图VLM生成描述
+            ja_JP: 开启插图VLM生成描述
+            pt_BR: 开启插图VLM生成描述
+            zh_Hans: 开启插图VLM生成描述
+          llm_description: （用于官方API）是否开启插图VLM生成描述
+          max: null
+          min: null
+          name: figure_vlm
+          options: []
+          placeholder: null
+          precision: null
+          required: false
+          scope: null
+          template: null
+          type: boolean
+        - auto_generate: null
+          default: auto
+          form: form
+          human_description:
+            en_US: (For local deployment service)Parsing method, can be auto, ocr,
+              or txt. Default is auto. If results are not satisfactory, try ocr
+            ja_JP: （ローカルデプロイメントサービス用）解析方法は、auto、ocr、またはtxtのいずれかです。デフォルトはautoです。結果が満足できない場合は、ocrを試してください
+            pt_BR: (For local deployment service)Parsing method, can be auto, ocr,
+              or txt. Default is auto. If results are not satisfactory, try ocr
+            zh_Hans: （用于本地部署服务）解析方法，可以是auto, ocr, 或 txt。默认是auto。如果结果不理想，请尝试ocr
+          label:
+            en_US: parse method
+            ja_JP: 解析方法
+            pt_BR: parse method
+            zh_Hans: 解析方法
+          llm_description: Parsing method, can be auto, ocr, or txt. Default is auto.
+            If results are not satisfactory, try ocr
+          max: null
+          min: null
+          name: parse_method
+          options:
+          - icon: ''
+            label:
+              en_US: auto
+              ja_JP: auto
+              pt_BR: auto
+              zh_Hans: auto
+            value: auto
+          - icon: ''
+            label:
+              en_US: ocr
+              ja_JP: ocr
+              pt_BR: ocr
+              zh_Hans: ocr
+            value: ocr
+          - icon: ''
+            label:
+              en_US: txt
+              ja_JP: txt
+              pt_BR: txt
+              zh_Hans: txt
+            value: txt
+          placeholder: null
+          precision: null
+          required: false
+          scope: null
+          template: null
+          type: select
+        - auto_generate: null
+          default: 1
+          form: form
+          human_description:
+            en_US: (For official API) Whether to enable formula recognition
+            ja_JP: （公式API用）数式認識を有効にするかどうか
+            pt_BR: (For official API) Whether to enable formula recognition
+            zh_Hans: （用于官方API）是否开启公式识别
+          label:
+            en_US: Enable formula recognition
+            ja_JP: 数式認識を有効にする
+            pt_BR: Enable formula recognition
+            zh_Hans: 开启公式识别
+          llm_description: (For official API) Whether to enable formula recognition
+          max: null
+          min: null
+          name: enable_formula
+          options: []
+          placeholder: null
+          precision: null
+          required: false
+          scope: null
+          template: null
+          type: boolean
+        - auto_generate: null
+          default: 1
+          form: form
+          human_description:
+            en_US: (For official API) Whether to enable table recognition
+            ja_JP: （公式API用）表認識を有効にするかどうか
+            pt_BR: (For official API) Whether to enable table recognition
+            zh_Hans: （用于官方API）是否开启表格识别
+          label:
+            en_US: Enable table recognition
+            ja_JP: 表認識を有効にする
+            pt_BR: Enable table recognition
+            zh_Hans: 开启表格识别
+          llm_description: (For official API) Whether to enable table recognition
+          max: null
+          min: null
+          name: enable_table
+          options: []
+          placeholder: null
+          precision: null
+          required: false
+          scope: null
+          template: null
+          type: boolean
+        - auto_generate: null
+          default: doclayout_yolo
+          form: form
+          human_description:
+            en_US: '(For official API) Optional values: doclayout_yolo, layoutlmv3,
+              default value is doclayout_yolo. doclayout_yolo is a self-developed
+              model with better effect'
+            ja_JP: （公式API用）オプション値：doclayout_yolo、layoutlmv3、デフォルト値は doclayout_yolo。doclayout_yolo
+              は自己開発モデルで、効果がより良い
+            pt_BR: '(For official API) Optional values: doclayout_yolo, layoutlmv3,
+              default value is doclayout_yolo. doclayout_yolo is a self-developed
+              model with better effect'
+            zh_Hans: （用于官方API）可选值：doclayout_yolo、layoutlmv3，默认值为 doclayout_yolo。doclayout_yolo
+              为自研模型，效果更好
+          label:
+            en_US: Layout model
+            ja_JP: レイアウト検出モデル
+            pt_BR: Layout model
+            zh_Hans: 布局检测模型
+          llm_description: '(For official API) Optional values: doclayout_yolo, layoutlmv3,
+            default value is doclayout_yolo. doclayout_yolo is a self-developed model
+            withbetter effect'
+          max: null
+          min: null
+          name: layout_model
+          options:
+          - icon: ''
+            label:
+              en_US: doclayout_yolo
+              ja_JP: doclayout_yolo
+              pt_BR: doclayout_yolo
+              zh_Hans: doclayout_yolo
+            value: doclayout_yolo
+          - icon: ''
+            label:
+              en_US: layoutlmv3
+              ja_JP: layoutlmv3
+              pt_BR: layoutlmv3
+              zh_Hans: layoutlmv3
+            value: layoutlmv3
+          placeholder: null
+          precision: null
+          required: false
+          scope: null
+          template: null
+          type: select
+        - auto_generate: null
+          default: auto
+          form: form
+          human_description:
+            en_US: '(For official API) Specify document language, default ch, can
+              be set to auto, when auto, the model will automatically identify document
+              language, other optional value list see: https://paddlepaddle.github.io/PaddleOCR/latest/ppocr/blog/multi_languages.html#5'
+            ja_JP: （公式API用）ドキュメント言語を指定します。デフォルトはchで、autoに設定できます。autoの場合、モデルはドキュメント言語を自動的に識別します。他のオプション値リストについては、次を参照してください：https://paddlepaddle.github.io/PaddleOCR/latest/ppocr/blog/multi_languages.html#5
+            pt_BR: '(For official API) Specify document language, default ch, can
+              be set to auto, when auto, the model will automatically identify document
+              language, other optional value list see: https://paddlepaddle.github.io/PaddleOCR/latest/ppocr/blog/multi_languages.html#5'
+            zh_Hans: （用于官方API）指定文档语言，默认 ch，可以设置为auto，当为auto时模型会自动识别文档语言，其他可选值列表详见：https://paddlepaddle.github.io/PaddleOCR/latest/ppocr/blog/multi_languages.html#5
+          label:
+            en_US: Document language
+            ja_JP: ドキュメント言語
+            pt_BR: Document language
+            zh_Hans: 文档语言
+          llm_description: '(For official API) Specify document language, default
+            ch, can be set to auto, when auto, the model will automatically identify
+            document language, other optional value list see: https://paddlepaddle.github.io/PaddleOCR/latest/ppocr/blog/multi_languages.html#5'
+          max: null
+          min: null
+          name: language
+          options: []
+          placeholder: null
+          precision: null
+          required: false
+          scope: null
+          template: null
+          type: string
+        - auto_generate: null
+          default: 0
+          form: form
+          human_description:
+            en_US: (For official API) Whether to enable OCR recognition
+            ja_JP: （公式API用）OCR認識を有効にするかどうか
+            pt_BR: (For official API) Whether to enable OCR recognition
+            zh_Hans: （用于官方API）是否开启OCR识别
+          label:
+            en_US: Enable OCR recognition
+            ja_JP: OCR認識を有効にする
+            pt_BR: Enable OCR recognition
+            zh_Hans: 开启OCR识别
+          llm_description: (For official API) Whether to enable OCR recognition
+          max: null
+          min: null
+          name: enable_ocr
+          options: []
+          placeholder: null
+          precision: null
+          required: false
+          scope: null
+          template: null
+          type: boolean
+        - auto_generate: null
+          default: '[]'
+          form: form
+          human_description:
+            en_US: '(For official API) Example: ["docx","html"], markdown, json are
+              the default export formats, no need to set, this parameter only supports
+              one or more of docx, html, latex'
+            ja_JP: （公式API用）例：["docx","html"]、markdown、jsonはデフォルトのエクスポート形式であり、設定する必要はありません。このパラメータは、docx、html、latexの3つの形式のいずれかまたは複数のみをサポートします
+            pt_BR: '(For official API) Example: ["docx","html"], markdown, json are
+              the default export formats, no need to set, this parameter only supports
+              one or more of docx, html, latex'
+            zh_Hans: （用于官方API）示例：["docx","html"],markdown、json为默认导出格式，无须设置，该参数仅支持docx、html、latex三种格式中的一个或多个
+          label:
+            en_US: Extra export formats
+            ja_JP: 追加のエクスポート形式
+            pt_BR: Extra export formats
+            zh_Hans: 额外导出格式
+          llm_description: '(For official API) Example: ["docx","html"], markdown,
+            json are the default export formats, no need to set, this parameter only
+            supports one or more of docx, html, latex'
+          max: null
+          min: null
+          name: extra_formats
+          options: []
+          placeholder: null
+          precision: null
+          required: false
+          scope: null
+          template: null
+          type: string
+        params:
+          enable_formula: ''
+          enable_ocr: ''
+          enable_table: ''
+          extra_formats: ''
+          figure_vlm: ''
+          file: ''
+          language: ''
+          layout_model: ''
+          method_type: ''
+          parse_method: ''
+        provider_id: franztao/mineru_dolphin/mineru
+        provider_name: franztao/mineru_dolphin/mineru
+        provider_type: builtin
+        selected: false
+        title: Parse File
+        tool_configurations:
+          enable_formula:
+            type: constant
+            value: true
+          enable_ocr:
+            type: constant
+            value: false
+          enable_table:
+            type: constant
+            value: true
+          extra_formats:
+            type: mixed
+            value: '[]'
+          figure_vlm:
+            type: constant
+            value: true
+          language:
+            type: mixed
+            value: auto
+          layout_model:
+            type: constant
+            value: doclayout_yolo
+          method_type:
+            type: constant
+            value: mineru
+          parse_method:
+            type: constant
+            value: auto
+        tool_description: 一个用于解析文本，表格和图片的工具，支持pdf,pptx,docx等多种格式。支持英语，中文等多种语言
+        tool_label: Parse File
+        tool_name: parse-file
+        tool_parameters:
+          file:
+            type: variable
+            value:
+            - '1753152872645'
+            - file_pic
+        type: tool
+        version: '2'
+      height: 329
+      id: '1753173098055'
+      position:
+        x: 334
+        y: 459.5
+      positionAbsolute:
+        x: 334
+        y: 459.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: true
+          variable_selector:
+          - '1753153179046'
+          - output
+        desc: ''
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: DeepSeek-V3
+          provider: langgenius/openai_api_compatible/openai_api_compatible
+        prompt_template:
+        - id: fa8d369c-758a-4a4f-8637-f668dde7f5da
+          role: system
+          text: "<指令>根据已知信息，简洁和专业的来回答问题，答案请使用中文。 \n</指令>\r\n<已知信息>{{#context#}}</已知信息>"
+        - id: a9a596d4-76d2-4bea-834a-549790b790be
+          role: user
+          text: '{{#sys.query#}}'
+        selected: false
+        title: doc compression块压缩
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 89
+      id: '1753174352720'
+      position:
+        x: 1246
+        y: 265
+      positionAbsolute:
+        x: 1246
+        y: 265
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    viewport:
+      x: 264
+      y: 204
+      zoom: 0.7
